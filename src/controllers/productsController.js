@@ -59,23 +59,29 @@ const productsController = {
                     withStock++;
                 }
             });
-            const mostSoldQuery = await Product_orders.findOne({
-                attributes: ["product_id", "quantity"],
-                include: [{ association: "product", duplicating: true }],
-                order: [["quantity", "DESC"]]
+            const topTenQuery = await Product_orders.findAll({
+                attributes: [[sequelize.fn("count", sequelize.col("product_id")), "count"]],
+                group: ["product_id"],
+                include: "product",
+                order: [[sequelize.literal("count"), "DESC"]],
+                limit: 10
             });
+            let topTen = [];
             let mostSold = "-";
-            if (mostSoldQuery != undefined) {
-                mostSold = mostSoldQuery.product.name;
-            }
-            const topTenQuery = await sequelize.query("SELECT DISTINCT product_order.product_id, product_order.quantity, products.name FROM product_order INNER JOIN products ON products.id = product_order.product_id ORDER BY product_order.quantity DESC LIMIT 10;");
-            const topTen = [];
-            topTenQuery[0].forEach(product => {
-                topTen.push({
-                    name: product.name
+            if (topTenQuery != undefined) {
+                topTenQuery.forEach(item => {
+                    topTen.push({
+                        name: item.product.name,
+                        count: item.dataValues.count
+                    });
                 });
+                (topTenQuery[0] != undefined) && (mostSold = topTenQuery[0].product.name);
+            }
+            const allSold = await Product_orders.findAll({
+                attributes: ["product_id", [sequelize.fn("count", sequelize.col("product_id")), "count"]],
+                group: ["product_id"]
             });
-            const sold = await Product_orders.aggregate("product_id", "count", { duplicating: false });
+            const sold = allSold.length;
             res.json({ total, withStock, sold, mostSold, topTen, countByCategory, products });
         } catch (error) {
             res.send(`Error: ${error}`);
