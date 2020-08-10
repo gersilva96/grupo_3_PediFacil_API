@@ -1,23 +1,23 @@
-{
+module.exports = {
   "development": {
-    "username": "root",
-    "password": "PASSWORD",
+    "username": "ger",
+    "password": "Desarrollo1!",
     "database": "pedifacil",
-    "host": "127.0.0.1",
+    "host": `${process.env.HOST}`,
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "database_test",
-    "host": "127.0.0.1",
+    "host": `${process.env.HOST}`,
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "database_production",
-    "host": "127.0.0.1",
+    "host": `${process.env.HOST}`,
     "dialect": "mysql"
   }
 }

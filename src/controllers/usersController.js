@@ -4,7 +4,7 @@ const usersController = {
     root: async (req, res) => {
         try {
             const usersQuery = await Users.findAndCountAll({
-                attributes: ["id", [Sequelize.fn("CONCAT", Sequelize.col("first_name"), " ", Sequelize.col("last_name")), "name"], "role_id", "business_name", "email", [Sequelize.fn("CONCAT", `http://localhost:${process.env.HOST_PORT}/users/`, Sequelize.col("id")), "detail"]]
+                attributes: ["id", [Sequelize.fn("CONCAT", Sequelize.col("first_name"), " ", Sequelize.col("last_name")), "name"], "role_id", "business_name", "email", [Sequelize.fn("CONCAT", `http://${process.env.HOST}:${process.env.PORT}/api/v1/users/`, Sequelize.col("id")), "detail"]]
             });
             const users = { ...usersQuery };
             users.users = users.rows;
@@ -84,7 +84,7 @@ const usersController = {
                     exclude: ["password", "role_id", "createdAt", "updatedAt"]
                 }
             });
-            let image_url = `http://localhost:${process.env.HOST_PORT}/images/users/${userInfo.image}`;
+            let image_url = `http://${process.env.HOST}:${process.env.PORT}/images/users/${userInfo.image}`;
             let user = { ...userInfo.dataValues, image_url };
             res.json(user);
         } catch (error) {

@@ -51,7 +51,7 @@ const productsController = {
                 delete product.category_id;
                 product.price = formatPrice(parseFloat(product.price), product.discount);
                 delete product.discount;
-                product.detail = `http://localhost:${process.env.HOST_PORT}/products/${product.id}`;
+                product.detail = `http://${process.env.HOST}:${process.env.PORT}/products/${product.id}`;
             });
             let withStock = 0;
             productsQuery.forEach(product => {
@@ -99,7 +99,7 @@ const productsController = {
             const category = await Categories.findByPk(product.category_id);
             product.seller = seller.business_name;
             product.category = category.name;
-            product.image_url = `http://localhost:${process.env.HOST_PORT}/images/products/${product.image}`;
+            product.image_url = `http://${process.env.HOST}:${process.env.PORT}/images/products/${product.image}`;
             delete product.user_id;
             delete product.category_id;
             res.json(product);
