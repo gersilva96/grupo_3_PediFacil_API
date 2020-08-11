@@ -71,8 +71,13 @@ const usersController = {
             users.admins = admins;
             users.sellers = sellers;
             users.buyers = buyers;
-
-            res.json(users);
+            const toResponse = {
+                meta: {
+                    status: 200
+                },
+                data: users
+            };
+            res.json(toResponse);
         } catch (error) {
             res.send(`Error: ${error}`);
         }
@@ -86,7 +91,13 @@ const usersController = {
             });
             let image_url = `http://${process.env.HOST}:${process.env.PORT}/images/users/${userInfo.image}`;
             let user = { ...userInfo.dataValues, image_url };
-            res.json(user);
+            const toResponse = {
+                meta: {
+                    status: 200
+                },
+                data: user
+            };
+            res.json(toResponse);
         } catch (error) {
             res.send(`Error: ${error}`);
         }

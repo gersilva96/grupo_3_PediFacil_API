@@ -51,7 +51,7 @@ const productsController = {
                 delete product.category_id;
                 product.price = formatPrice(parseFloat(product.price), product.discount);
                 delete product.discount;
-                product.detail = `http://${process.env.HOST}:${process.env.PORT}/products/${product.id}`;
+                product.detail = `http://${process.env.HOST}:${process.env.PORT}/api/v1/products/${product.id}`;
             });
             let withStock = 0;
             productsQuery.forEach(product => {
@@ -82,7 +82,21 @@ const productsController = {
                 group: ["product_id"]
             });
             const sold = allSold.length;
-            res.json({ total, withStock, sold, mostSold, topTen, countByCategory, products });
+            const toResponse = {
+                meta: {
+                    status: 200
+                },
+                data: {
+                    total,
+                    withStock,
+                    sold,
+                    mostSold,
+                    topTen,
+                    countByCategory,
+                    products
+                }
+            };
+            res.json(toResponse);
         } catch (error) {
             res.send(`Error: ${error}`);
         }
@@ -102,7 +116,15 @@ const productsController = {
             product.image_url = `http://${process.env.HOST}:${process.env.PORT}/images/products/${product.image}`;
             delete product.user_id;
             delete product.category_id;
-            res.json(product);
+            const toResponse = {
+                meta: {
+                    status: 200
+                },
+                data: {
+                    product
+                }
+            };
+            res.json(toResponse);
         } catch (error) {
             res.send(`Error: ${error}`);
         }
@@ -116,8 +138,16 @@ const productsController = {
             });
             products.forEach(product => {
                 product.price = formatPrice(parseFloat(product.price));
-            })
-            res.json(products);
+            });
+            const toResponse = {
+                meta: {
+                    status: 200
+                },
+                data: {
+                    products
+                }
+            };
+            res.json(toResponse);
         } catch (error) {
             res.send(`Error: ${error}`);
         }
@@ -130,7 +160,15 @@ const productsController = {
                 count += (parseFloat(product.price) * (1 - (parseInt(product.discount) / 100))) * product.stock;
             });
             let total = formatPrice(count);
-            res.json(total);
+            const toResponse = {
+                meta: {
+                    status: 200
+                },
+                data: {
+                    total
+                }
+            };
+            res.json(toResponse);
         } catch (error) {
             res.send(`Error: ${error}`);
         }

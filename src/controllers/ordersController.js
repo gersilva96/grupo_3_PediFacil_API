@@ -4,7 +4,13 @@ const ordersController = {
     total: async (req, res) => {
         try {
             const orders = await Orders.count();
-            res.json(orders);
+            const toResponse = {
+                meta: {
+                    status: 200
+                },
+                data: orders
+            };
+            res.json(toResponse);
         } catch (error) {
             res.send(`Error: ${error}`);
         }
