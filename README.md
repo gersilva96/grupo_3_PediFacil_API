@@ -2,7 +2,7 @@
 
 Repositorio de la API RESTful de [PedíFácil](https://github.com/gersilva96/grupo_3_PediFacil), para suministrarle información al [Dashboard](https://github.com/gersilva96/grupo-3-pedifacil-dashboard)
 
-# Tecnologías utilizadas
+### Tecnologías utilizadas
 
 - **NodeJS** y **Express** para la gestión del servidor
 - **REST** como arquitectura de la **API**
